@@ -52,7 +52,7 @@ header[data-testid="stHeader"] * {
     background: #0f0f18 !important;
     border-right: 1px solid #1e1e2e;
 }
-[data-testid="stSidebar"] * { font-family: 'Space Mono', monospace !important; }
+[data-testid="stSidebar"] *:not([data-testid="stIconMaterial"]) { font-family: 'Space Mono', monospace !important; }
 
 /* Sidebar header accent */
 [data-testid="stSidebar"] h1,
@@ -116,6 +116,23 @@ header[data-testid="stHeader"] * {
 [data-testid="stFileUploader"] button {
     font-size: 0.82rem !important;
     white-space: normal !important;
+}
+
+/* Fix: force the dropzone (icon + instructions + Browse button) into
+   a vertical stack instead of Streamlit's default horizontal layout.
+   In a narrow sidebar (and especially on mobile widths), the button
+   and instruction text don't have enough horizontal room and render
+   on top of each other. Stacking removes any competition for space. */
+[data-testid="stFileUploaderDropzone"] {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.6rem !important;
+    padding: 1rem !important;
+}
+[data-testid="stFileUploaderDropzone"] button {
+    width: 100% !important;
+    margin: 0 !important;
 }
 
 
