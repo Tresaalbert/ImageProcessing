@@ -85,6 +85,25 @@ html, body, [data-testid="stAppViewContainer"] {
     font-size: 0.8rem !important;
 }
 
+/* Fix: stack instructions + Browse button vertically so the wider
+   monospace font can't overflow and overlap (was causing the
+   "Browse files" button to render on top of the dropzone text) */
+[data-testid="stFileUploaderDropzone"] {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.6rem !important;
+    padding: 1rem !important;
+}
+[data-testid="stFileUploaderDropzone"] > div:first-child {
+    width: 100% !important;
+}
+[data-testid="stFileUploaderDropzone"] button {
+    width: 100% !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+}
+
 /* Buttons */
 .stButton > button {
     background: linear-gradient(135deg, #7c6af7, #c46af7) !important;
