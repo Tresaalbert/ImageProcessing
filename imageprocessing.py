@@ -96,13 +96,6 @@ header[data-testid="stHeader"] * {
     border-color: #7c6af7 !important;
 }
 
-/* Fix: the blanket [data-testid="stSidebar"] * rule above forces every
-   element — including the native "Browse files" button and dropzone
-   text — into wide monospace Space Mono. Streamlit sizes the uploader's
-   internal layout for its default (narrower) font, so the wider
-   monospace text overflows its box and overlaps the button. Reset the
-   font specifically inside the uploader back to a normal UI font so
-   the native layout has room to render correctly. */
 [data-testid="stFileUploader"] * {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
 }
@@ -113,16 +106,7 @@ header[data-testid="stHeader"] * {
 [data-testid="stFileUploader"] small {
     font-size: 0.72rem !important;
 }
-[data-testid="stFileUploader"] button {
-    font-size: 0.82rem !important;
-    white-space: normal !important;
-}
 
-/* Fix: force the dropzone (icon + instructions + Browse button) into
-   a vertical stack instead of Streamlit's default horizontal layout.
-   In a narrow sidebar (and especially on mobile widths), the button
-   and instruction text don't have enough horizontal room and render
-   on top of each other. Stacking removes any competition for space. */
 [data-testid="stFileUploaderDropzone"] {
     display: flex !important;
     flex-direction: column !important;
@@ -130,10 +114,38 @@ header[data-testid="stHeader"] * {
     gap: 0.6rem !important;
     padding: 1rem !important;
 }
+
+/* Fix: previous attempts tried to repair the native button's own text
+   layout, but it keeps rendering duplicate/overlapping "upload" text
+   regardless — this looks like an internal Streamlit rendering glitch,
+   not something fixable by adjusting font or spacing. Instead of
+   fighting it, blank out whatever text the native button renders
+   (whether single or duplicated) and draw one clean label on top via
+   a pseudo-element, so the visible result is correct no matter what
+   the native button is doing underneath. */
 [data-testid="stFileUploaderDropzone"] button {
     width: 100% !important;
     margin: 0 !important;
+    position: relative !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    min-height: 2.6rem !important;
 }
+[data-testid="stFileUploaderDropzone"] button * {
+    visibility: hidden !important;
+}
+[data-testid="stFileUploaderDropzone"] button::after {
+    content: "Browse files";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    color: #e8e6f0;
+}
+
 
 
 /* Buttons */
