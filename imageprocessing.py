@@ -31,6 +31,14 @@ html, body, [data-testid="stAppViewContainer"] {
 #MainMenu, footer, header { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
+/* Keep the sidebar collapse/expand arrow visible — it lives inside
+   the header, so hiding the header above also hid this control,
+   making a collapsed sidebar impossible to re-open. */
+[data-testid="collapsedControl"] {
+    visibility: visible !important;
+    display: flex !important;
+}
+
 /* ── Sidebar ── */
 [data-testid="stSidebar"] {
     background: #0f0f18 !important;
@@ -79,30 +87,29 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stFileUploader"]:hover {
     border-color: #7c6af7 !important;
 }
+
+/* Fix: the blanket [data-testid="stSidebar"] * rule above forces every
+   element — including the native "Browse files" button and dropzone
+   text — into wide monospace Space Mono. Streamlit sizes the uploader's
+   internal layout for its default (narrower) font, so the wider
+   monospace text overflows its box and overlaps the button. Reset the
+   font specifically inside the uploader back to a normal UI font so
+   the native layout has room to render correctly. */
+[data-testid="stFileUploader"] * {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
 [data-testid="stFileUploader"] label {
     color: #9998b0 !important;
-    font-family: 'Space Mono', monospace !important;
     font-size: 0.8rem !important;
 }
+[data-testid="stFileUploader"] small {
+    font-size: 0.72rem !important;
+}
+[data-testid="stFileUploader"] button {
+    font-size: 0.82rem !important;
+    white-space: normal !important;
+}
 
-/* Fix: stack instructions + Browse button vertically so the wider
-   monospace font can't overflow and overlap (was causing the
-   "Browse files" button to render on top of the dropzone text) */
-[data-testid="stFileUploaderDropzone"] {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 0.6rem !important;
-    padding: 1rem !important;
-}
-[data-testid="stFileUploaderDropzone"] > div:first-child {
-    width: 100% !important;
-}
-[data-testid="stFileUploaderDropzone"] button {
-    width: 100% !important;
-    margin: 0 !important;
-    white-space: nowrap !important;
-}
 
 /* Buttons */
 .stButton > button {
