@@ -27,16 +27,24 @@ html, body, [data-testid="stAppViewContainer"] {
     font-family: 'Syne', sans-serif;
 }
 
-/* Hide default Streamlit chrome */
-#MainMenu, footer, header { visibility: hidden; }
+/* Hide default Streamlit chrome (menu + footer only — these are
+   purely decorative and safe to fully hide) */
+#MainMenu, footer { visibility: hidden; }
 [data-testid="stDecoration"] { display: none; }
 
-/* Keep the sidebar collapse/expand arrow visible — it lives inside
-   the header, so hiding the header above also hid this control,
-   making a collapsed sidebar impossible to re-open. */
-[data-testid="collapsedControl"] {
-    visibility: visible !important;
-    display: flex !important;
+/* Restyle the header instead of hiding it. Hiding it with
+   visibility:hidden also hides the sidebar collapse/expand arrow
+   that lives inside it (and Streamlit has renamed that inner
+   element across versions — collapsedControl, stSidebarCollapseButton,
+   etc. — so patching it back by testid is fragile). Keeping the
+   header itself visible but blending it into the dark background
+   works reliably across all Streamlit versions. */
+header[data-testid="stHeader"] {
+    background: transparent !important;
+    height: 2.2rem !important;
+}
+header[data-testid="stHeader"] * {
+    color: #9998b0 !important;
 }
 
 /* ── Sidebar ── */
